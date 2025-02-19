@@ -8,7 +8,6 @@ import (
 func TestTryByteWithAllowedResult(t *testing.T) {
 	x := Obxor{
 		Ciphertext: []byte{0, 3, 4, 6},
-		ProbabilityDist: map[byte]float64{0: 0.4, 3: 0.25, 4: 0.1, 5: 0.1, 6: 0.05, 7: 0.1},
 		KeyBytes: []byte{0, 3, 4, 6},
 		ResultBytes: []byte{0, 3, 4, 5, 6, 7},
 	}
@@ -23,7 +22,6 @@ func TestTryByteWithAllowedResult(t *testing.T) {
 func TestTryByteWithNotAllowedResult(t *testing.T) {
 	x := Obxor{
 		Ciphertext: []byte{0, 3, 4, 6},
-		ProbabilityDist: map[byte]float64{0: 0.4, 3: 0.25, 4: 0.1, 5: 0.1, 6: 0.05, 7: 0.1},
 		KeyBytes: []byte{0, 3, 4, 6},
 		ResultBytes: []byte{0, 3, 4, 5, 6, 7},
 	}
@@ -38,7 +36,6 @@ func TestTryByteWithNotAllowedResult(t *testing.T) {
 func TestCandidates(t *testing.T) {
 	x := Obxor{
 		Ciphertext: []byte{0, 3, 4, 6},
-		ProbabilityDist: map[byte]float64{0: 0.4, 3: 0.25, 4: 0.1, 5: 0.1, 6: 0.05, 7: 0.1},
 		KeyBytes: []byte{0, 3, 4, 6},
 		ResultBytes: []byte{0, 3, 4, 5, 6, 7},
 	}
@@ -51,5 +48,8 @@ func TestCandidates(t *testing.T) {
 	// 6 XOR ciphertext = 6520 (2 not in {ResultBytes})
 
 	assert.DeepEqual(t, candidates,
-		[]Candidate{ Candidate{B: 0, Diff: 0}, Candidate{B: 3, Diff: 0} })
+		[]Candidate{
+			Candidate{B: 0, Result: []byte{0,3,4,6}},
+			Candidate{B: 3, Result: []byte{3,0,7,5}},
+	 	})
 }
