@@ -11,11 +11,14 @@ type Mbxor struct {
 	ResultBytes []byte
 }
 
-func (x *Mbxor) Candidates() [][]obxor.Candidate {
+func (x *Mbxor) Candidates() ([][]obxor.Candidate, error) {
 	candidates := [][]obxor.Candidate{}
 
 	// Transpose Ciphertexts. The elements of the result have the same one-byte key.
-	obCiphertexts := utils.Transpose(x.Ciphertexts)
+	obCiphertexts, err := utils.Transpose(x.Ciphertexts)
+	if err != nil {
+		return candidates, err
+	}
 
 	for _, ciphertext := range obCiphertexts {
 		obx := obxor.Obxor{
@@ -26,5 +29,5 @@ func (x *Mbxor) Candidates() [][]obxor.Candidate {
 		candidates = append(candidates, obx.Candidates())
 	}
 
-	return candidates
+	return candidates, nil
 }

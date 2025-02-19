@@ -26,5 +26,7 @@ func TestCandidates(t *testing.T) {
 		},
 	}
 	
-	assert.DeepEqual(t, x.Candidates(), expectedCandidates)
+	res, err := x.Candidates()
+	assert.DeepEqual(t, res, expectedCandidates)
+	assert.Equal(t, err, nil)
 }
