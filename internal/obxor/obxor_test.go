@@ -49,7 +49,7 @@ func TestCandidates(t *testing.T) {
 
 	assert.DeepEqual(t, candidates,
 		[]Candidate{
-			Candidate{B: 0, Result: []byte{0,3,4,6}},
-			Candidate{B: 3, Result: []byte{3,0,7,5}},
+			{B: 0, Result: []byte{0,3,4,6}},
+			{B: 3, Result: []byte{3,0,7,5}},
 	 	})
 }
