@@ -3,6 +3,7 @@ package obxor
 import (
 	"errors"
 	"slices"
+	"github.com/moritzhoeppner/xor-brute-force/internal/statistics"
 )
 
 type Obxor struct {
@@ -14,6 +15,13 @@ type Obxor struct {
 type Candidate struct {
 	B      byte
 	Result []byte
+	Diff   float64
+}
+
+func (x *Candidate) SetDiff(expectedDist map[byte]float64) float64 {
+	actualDist := statistics.RelByteDist(x.Result)
+	x.Diff = statistics.ChiSquare(actualDist, expectedDist)
+	return x.Diff
 }
 
 func (x *Obxor) Candidates() []Candidate {
