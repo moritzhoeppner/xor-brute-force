@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# The plaintext samples are copied from
+# https://en.wikipedia.org/w/index.php?title=Crime_and_Punishment_(1983_film)&oldid=1266114572
 plain_texts=(
   "A slaughterhouse worker, Antti Rahikainen, murders a man."
   "finds the woman who witnessed the murder, Eeva Laakso, an"
