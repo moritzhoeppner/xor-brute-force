@@ -2,6 +2,8 @@
 
 This is a little toy program that brute forces stream ciphers with repeating keystreams.
 
+![Tests](https://github.com/moritzhoeppner/xor-brute-force/actions/workflows/tests.yml/badge.svg)
+
 ## Usage
 
 - Build the project with `go build .`
