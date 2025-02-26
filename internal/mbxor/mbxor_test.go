@@ -60,3 +60,20 @@ func TestMostLikely(t *testing.T) {
 	key = candidates.MostLikely(map[byte]float64 { 1: 0.25, 2: 0.25, 3: 0.5 })
 	assert.DeepEqual(t, key, []byte{ 0, 0 })
 }
+
+func TestMostLikelyWithGaps(t *testing.T) {
+	// If there is no candidate for a byte, the MostLikely should propose 0 for this byte.
+
+	c := Candidates{
+		PerByte: [][]obxor.Candidate{
+			{ obxor.Candidate{ B: 27, Result: []byte{ 20, 21, 22 } } },
+			{},
+			{ obxor.Candidate{ B: 25, Result: []byte{ 20, 21, 22 } } },
+		},
+	}
+
+	// The expected distribution doesn't matter because we have at most 1 candidate for each byte.
+	var expectedDist map[byte]float64
+	
+	assert.DeepEqual(t, c.MostLikely(expectedDist), []byte{ 27, 0, 25 })
+}

@@ -51,7 +51,9 @@ func (x *Candidates) MostLikely(expectedDist map[byte]float64) []byte {
 			return candidates[i].Diff < candidates[j].Diff
 		})
 
-		mostLikelyKey[i] = x.PerByte[i][0].B
+		if len(x.PerByte[i]) > 0 {
+			mostLikelyKey[i] = x.PerByte[i][0].B
+		}
 	}
 
 	return mostLikelyKey
