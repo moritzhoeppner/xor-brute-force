@@ -1,3 +1,7 @@
+// Package mbxor provides routines for brute-forcing a multi-byte XOR cipher.
+//
+// A multi-byte XOR cipher generates a ciphertext by XORing it bitwise with a fixed key that has a
+// byte length > 1.
 package mbxor
 
 import (
@@ -57,4 +61,26 @@ func (x *Candidates) MostLikely(expectedDist map[byte]float64) []byte {
 	}
 
 	return mostLikelyKey
+}
+
+func MostLikelyKey(ciphertexts [][]byte, expectedDist map[byte]float64) ([]byte, error) {
+	expectedBytes := make([]byte, len(expectedDist))
+	i := 0
+	for k, _ := range expectedDist {
+		expectedBytes[i] = k
+		i++
+	}
+
+	xor := Mbxor{
+		Ciphertexts: ciphertexts,
+		KeyBytes: expectedBytes,
+		ResultBytes: expectedBytes,
+	}
+
+	candidates, err := xor.Candidates()
+	if err != nil {
+		return nil, err
+	}
+
+	return candidates.MostLikely(expectedDist), nil
 }

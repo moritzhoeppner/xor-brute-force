@@ -4,6 +4,8 @@ import (
 	"errors"
 )
 
+// Transpose switches rows and columns of the given two-dimensional slice. If such a slice is
+// interpreted as matrix, the result is the transpose matrix.
 func Transpose[T any](s [][]T) ([][]T, error) {
 	width := len(s)
 	

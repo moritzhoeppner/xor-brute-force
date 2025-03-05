@@ -51,7 +51,9 @@ func processCmdArgs() (map[byte]float64, []SrcFile, error) {
 	return expectedDist, srcFiles, nil
 }
 
-func xorSrcFiles(srcFiles []SrcFile) []SrcFile {
+// xorSrcFiles XORs the content of srcFiles[i] with the content of srcFiles[i+1] and saves the
+// result in srcFiles[i+1]. The first element is not changed.
+func xorSrcFiles(srcFiles []SrcFile) {
 	// Find length of the source file.
 	sort.Slice(srcFiles, func (i, j int) bool {
 		return len(srcFiles[i].Content) < len(srcFiles[j].Content)
@@ -63,8 +65,6 @@ func xorSrcFiles(srcFiles []SrcFile) []SrcFile {
 		srcFiles[i].Content = srcFiles[i].Content[:minLen]
 		subtle.XORBytes(srcFiles[i].Content, srcFiles[0].Content, srcFiles[i].Content[:minLen])
 	}
-
-	return srcFiles
 }
 
 func main() {
@@ -73,38 +73,22 @@ func main() {
 		panic(err)
 	}
 
-	// XOR the given source files.
-	xoredSrcFiles := xorSrcFiles(srcFiles)
-	messages := make([][]byte, len(xoredSrcFiles) - 1)
+	// XOR the first source file with every other one and save the results in {messages}. These
+	// results are essentially ciphertexts of a multi-byte XOR cipher with the first plaintext as key.
+	xorSrcFiles(srcFiles)
+	messages := make([][]byte, len(srcFiles) - 1)
 	for i, _ := range messages {
-		messages[i] = xoredSrcFiles[i + 1].Content
+		messages[i] = srcFiles[i + 1].Content
 	}
 
-	// I'll assume that each plaintext consists only of bytes that appear in the given distribution.
-	expectedBytes := make([]byte, len(expectedDist))
-	i := 0
-	for k, _ := range expectedDist {
-		expectedBytes[i] = k
-		i++
-	}
-	
-	// Get all possible keys, then determine which is the most likely one.
-
-	xor := mbxor.Mbxor{
-		Ciphertexts: messages,
-		KeyBytes: expectedBytes,
-		ResultBytes: expectedBytes,
-	}
-
-	candidates, err := xor.Candidates()
+	// Determine the most likely key, i.e. the first plaintext.
+	key, err := mbxor.MostLikelyKey(messages, expectedDist)
 	if err != nil {
 		panic(err)
 	}
 
-	key := candidates.MostLikely(expectedDist)
-
 	// And output.
-	for i, xoredSrcFile := range xoredSrcFiles {
+	for i, xoredSrcFile := range srcFiles {
 		var decrypted []byte
 		if i == 0 {
 			decrypted = key

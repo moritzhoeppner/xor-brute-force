@@ -1,3 +1,7 @@
+// Package obxor provides routines for brute-forcing a one-byte XOR cipher.
+//
+// A one-byte XOR cipher generates a ciphertext by XORing each byte of the plaintext with a fixed
+// key byte.
 package obxor
 
 import (

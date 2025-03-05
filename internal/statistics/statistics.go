@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-// Returns the relative frequency distribution of the bytes in {byte}.
+// RelByteDist returns the relative frequency distribution of the given bytes.
 func RelByteDist(bytes []byte) map[byte]float64 {
 	total := float64(len(bytes))
 	absDist := make(map[byte]int)
@@ -21,6 +21,9 @@ func RelByteDist(bytes []byte) map[byte]float64 {
 	return relDist
 }
 
+// ChiSqure calculates the following measure for the similarity of the two given distributions,
+// observed and theoretical:
+//   sum_(i=0)^n ((observed[i] - theoretical[i])^2 / theoretical[i])
 func ChiSquare(observed map[byte]float64, theoretical map[byte]float64) float64 {
 	res := 0.0
 	for i, t := range theoretical {
