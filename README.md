@@ -6,7 +6,7 @@ This is a little toy program that brute forces stream ciphers with repeating key
 
 ## Usage
 
-- Build the project with `go build .`
+- Build the project with `make`
 - Describe the expected frequency distribution of plaintext bytes in a JSON file. For example, if
 the byte 65 (in decimal representation) has a probability of 50% and the bytes 66 and 67 have
 probabilities of 25%, respectively, your JSON file would be:
@@ -18,7 +18,7 @@ probabilities of 25%, respectively, your JSON file would be:
 }
 ```
 - Copy ciphertexts that were generated with the same keystream in one directory.
-- Execute `xor-brute-force -dist {path of your JSON file} -messages {directory with encrypted messages}`
+- Execute `bin/xor-brute-force -dist {path of your JSON file} -messages {directory with encrypted messages}`
 
 You need at least two ciphertexts. However, the more you have, the better the results will be. The
 program will only try to decrypt initial segments of the length of the shortest message.
@@ -30,7 +30,7 @@ AES-256-CTR ciphertexts of English plaintexts. The encryption uses the same IV e
 means the counter blocks and hence the keystreams are the same for each file. `example/dist.json`
 contains a frequency distribution for English texts I generated on the basis of texts from the
 English Wikipedia. When you run
-`xor-brute-force -dist example/dist.json -messages ./example/messages`, you'll see the plaintexts
+`bin/xor-brute-force -dist example/dist.json -messages ./example/messages`, you'll see the plaintexts
 with only a few errors.
 
 ## How does it work?
