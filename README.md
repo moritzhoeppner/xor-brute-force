@@ -43,10 +43,10 @@ If you have enough of these ciphertexts, you can decrypt them byte by byte. Firs
 ```
 {xored n} = {ciphertext 1} XOR {ciphertext n} (n > 1)
 ```
-Now, guess the first byte of plaintext 1 (say, `b`). If the guess is correct, you'll get the
-first byte of plaintext `n` by XORing `b` with the first byte of `{xored n}`. Calculate and save
-these bytes for all `n`> 1. Now, guess a different first byte and do the same. When you tried all
-possible values for `b`, choose the one that produces a result that approximates best the expected
+Now, guess the first byte of plaintext 1 (say, b). If the guess is correct, you'll get the
+first byte of plaintext n by XORing b with the first byte of `{xored n}`. Calculate and save
+these bytes for all n > 1. Now, guess a different first byte and do the same. When you tried all
+possible values for b, choose the one that produces a result that approximates best the expected
 frequency distribution of bytes.
 
 This idea to essentially reduce the problem to a one-byte XOR cipher is taken from [this talk by
